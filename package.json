@@ -1,0 +1,11 @@
+{
+  "name": "atlas-of-imagined-futures",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An interactive star chart of science fiction literature.",
+  "scripts": {
+    "validate": "node scripts/validate-data.js",
+    "serve": "python3 -m http.server 8000"
+  },
+  "license": "MIT"
+}
