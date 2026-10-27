@@ -32,8 +32,8 @@ Keyboard: <kbd>/</kbd> search · <kbd>Esc</kbd> close · <kbd>+</kbd> / <kbd>-</
 There is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
 
 ```sh
-python3 -m http.server 8000
-# then visit http://localhost:8000
+python3 -m http.server 8001
+# then visit http://localhost:8001
 ```
 
 To publish it with GitHub Pages, enable Pages for the repository and point it at the branch root.
