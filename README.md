@@ -32,7 +32,8 @@ Keyboard: <kbd>/</kbd> search · <kbd>Esc</kbd> close · <kbd>+</kbd> / <kbd>-</
 There is no build step and there are no dependencies. Open `index.html` in a browser, or serve the folder:
 
 ```sh
-python3 -m http.server 8001
+npm run serve
+# or, without npm: python3 -m http.server 8001
 # then visit http://localhost:8001
 ```
 
