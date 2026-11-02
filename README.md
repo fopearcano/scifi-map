@@ -23,7 +23,7 @@ An interactive star chart of science fiction literature. 230 works, from Lucian'
   - *The Science*: 17 topics, from time dilation and orbital mechanics to epidemics and the Sapir–Whorf hypothesis. Each gives one key figure, what the science says, how fiction uses it and where fiction bends it.
   - *Writing Methods*: 15 techniques particular to SF, such as the novum, incluing, the info-dump, extrapolation and the conceptual breakthrough. Each has its origin, how it's done, an example from a book in the atlas, a common pitfall and an exercise.
 
-  Every entry links to its books, and *Spotlight on the map* shows only those works on the chart.
+  Every entry links to its books, and *Spotlight on the map* shows only those works on the chart. In the guide's text, book titles are marked `*like this*`; titles of works in the atlas become links to their records.
 - **Records**: click a star to see its synopsis, themes, awards, what it draws on, what it influenced and other works by the same author. *Trace full lineage* lights up every ancestor and descendant.
 - **Voyages**: six guided tours, including the origins of the genre, the history of artificial minds, the road to cyberspace and the long argument with *Starship Troopers*.
 - **Filters**: sectors (Alt-click to show one sector only), a publication-year range, and award winners (Hugo, Nebula, Arthur C. Clarke).
@@ -45,7 +45,7 @@ npm run serve
 
 `scripts/serve.py` tells the browser to re-check every file, so you always see the latest version after pulling changes. If you use another server and the page looks out of date (for example a button that does nothing), force a full reload with <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows and Linux).
 
-The stylesheet and scripts are linked from `index.html` with a version tag (`?v=3`). Increase it whenever you change CSS or JavaScript, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
+The stylesheet and scripts are linked from `index.html` with a version tag (`?v=4`). Increase it whenever you change CSS or JavaScript, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
 
 To publish it with GitHub Pages, enable Pages for the repository and point it at the branch root.
 

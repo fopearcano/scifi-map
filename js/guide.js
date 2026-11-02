@@ -20,6 +20,25 @@
     craft: 'Techniques that are particular to writing science fiction. Each method has its origin, how it works, an example from a book in the atlas, a common mistake, and an exercise to try.'
   };
 
+  // Book titles are marked *like this* in the guide text. Titles of works in
+  // the atlas become links to their records; other titles are just set as titles.
+  var titleIndex = {};
+  S.works.forEach(function (w) {
+    var short = w.title.split(/[;:]\s/)[0];
+    titleIndex[w.title] = w.id;
+    if (!titleIndex[short]) titleIndex[short] = w.id;
+  });
+
+  function rich(text) {
+    return text.split(/\*([^*]+)\*/).map(function (part, i) {
+      if (i % 2 === 0) return esc(part);
+      var id = titleIndex[part];
+      return id
+        ? '<button type="button" class="g-cite" data-goto="' + id + '">' + esc(part) + '</button>'
+        : '<cite class="g-cite">' + esc(part) + '</cite>';
+    }).join('');
+  }
+
   S.guideEntry = function (tab, id) {
     var t = S.guideTabs.find(function (x) { return x.id === tab; });
     return t && t.items.find(function (e) { return e.id === id; });
@@ -29,7 +48,7 @@
     return '<ul class="g-works" aria-label="Books in the atlas">' + ids.map(function (id) {
       var w = S.byId[id];
       return '<li><button type="button" class="g-chip sec-' + w.sector + '" data-goto="' + w.id + '">' +
-        '<span class="dot"></span>' + esc(w.title) + ' <span class="yr">' + esc(S.yearText(w)) + '</span></button></li>';
+        '<span class="dot"></span><cite>' + esc(w.title) + '</cite> <span class="yr">' + esc(S.yearText(w)) + '</span></button></li>';
     }).join('') + '</ul>';
   }
 
@@ -44,9 +63,9 @@
     return '<article class="g-card sec-' + e.sector + '" id="g-' + e.id + '" tabindex="-1">' +
       '<p class="g-kicker"><span class="dot"></span>' + esc(sector.short) + ' sector</p>' +
       '<h3 class="g-name">' + esc(e.name) + '</h3>' +
-      '<p class="g-summary">' + esc(e.summary) + '</p>' +
+      '<p class="g-summary">' + rich(e.summary) + '</p>' +
       '<h4 class="g-h">Questions it asks</h4><ul class="g-questions">' +
-      e.questions.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
+      e.questions.map(function (q) { return '<li>' + rich(q) + '</li>'; }).join('') + '</ul>' +
       '<h4 class="g-h">Recurring motifs</h4><p class="g-motifs">' +
       e.motifs.map(esc).join('<span aria-hidden="true"> · </span>') + '</p>' +
       footer('themes', e) + '</article>';
@@ -55,11 +74,11 @@
   function science(e) {
     return '<article class="g-sci" id="g-' + e.id + '" tabindex="-1">' +
       '<div class="g-fact"><span class="g-fact-value">' + esc(e.fact.value) + '</span>' +
-      '<span class="g-fact-label">' + esc(e.fact.label) + '</span></div>' +
+      '<span class="g-fact-label">' + rich(e.fact.label) + '</span></div>' +
       '<div class="g-body"><h3 class="g-name">' + esc(e.name) + '</h3>' +
-      '<dl class="g-dl"><dt>The science</dt><dd>' + esc(e.science) + '</dd>' +
-      '<dt>In the fiction</dt><dd>' + esc(e.fiction) + '</dd>' +
-      '<dt>Where it bends</dt><dd>' + esc(e.bends) + '</dd></dl>' +
+      '<dl class="g-dl"><dt>The science</dt><dd>' + rich(e.science) + '</dd>' +
+      '<dt>In the fiction</dt><dd>' + rich(e.fiction) + '</dd>' +
+      '<dt>Where it bends</dt><dd>' + rich(e.bends) + '</dd></dl>' +
       footer('science', e) + '</div></article>';
   }
 
@@ -67,15 +86,15 @@
     var ex = S.byId[e.example.id];
     return '<article class="g-craft" id="g-' + e.id + '" tabindex="-1">' +
       '<h3 class="g-name">' + esc(e.name) + '</h3>' +
-      '<p class="g-origin">' + esc(e.origin) + '</p>' +
-      '<p class="g-summary">' + esc(e.summary) + '</p>' +
+      '<p class="g-origin">' + rich(e.origin) + '</p>' +
+      '<p class="g-summary">' + rich(e.summary) + '</p>' +
       '<div class="g-cols"><div><h4 class="g-h">How it’s done</h4><ul class="g-how">' +
-      e.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ul></div>' +
-      '<figure class="g-example"><figcaption class="g-h">In practice</figcaption><p>' + esc(e.example.text) + '</p>' +
+      e.how.map(function (h) { return '<li>' + rich(h) + '</li>'; }).join('') + '</ul></div>' +
+      '<figure class="g-example"><figcaption class="g-h">In practice</figcaption><p>' + rich(e.example.text) + '</p>' +
       '<button type="button" class="g-source sec-' + ex.sector + '" data-goto="' + ex.id + '"><span class="dot"></span>' +
-      esc(ex.title) + ', ' + esc(ex.author) + '</button></figure></div>' +
-      '<div class="g-cols"><div><h4 class="g-h">Watch out for</h4><p class="g-pitfall">' + esc(e.pitfall) + '</p></div>' +
-      '<div><h4 class="g-h">Try it</h4><p class="g-exercise">' + esc(e.exercise) + '</p></div></div>' +
+      '<cite>' + esc(ex.title) + '</cite>, ' + esc(ex.author) + '</button></figure></div>' +
+      '<div class="g-cols"><div><h4 class="g-h">Watch out for</h4><p class="g-pitfall">' + rich(e.pitfall) + '</p></div>' +
+      '<div><h4 class="g-h">Try it</h4><p class="g-exercise">' + rich(e.exercise) + '</p></div></div>' +
       footer('craft', e) + '</article>';
   }
 

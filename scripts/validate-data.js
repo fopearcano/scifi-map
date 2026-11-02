@@ -91,6 +91,20 @@ for (const section of ['themes', 'science', 'craft']) {
   }
 }
 
+// Book titles in guide text are marked *like this*, so markers must pair up.
+const checkMarks = (value, where) => {
+  if (typeof value === 'string') {
+    if ((value.match(/\*/g) || []).length % 2) fail(`${where}: unpaired * title marker`);
+  } else if (Array.isArray(value)) {
+    value.forEach((v) => checkMarks(v, where));
+  } else if (value && typeof value === 'object') {
+    for (const k of Object.keys(value)) if (k !== 'works') checkMarks(value[k], where);
+  }
+};
+for (const section of ['themes', 'science', 'craft']) {
+  for (const e of guide[section] || []) checkMarks(e, `guide ${section} "${e.id}"`);
+}
+
 const links = S.works.reduce((n, w) => n + (w.inf || []).length, 0);
 const authors = new Set(S.works.map((w) => w.author)).size;
 warnings.forEach((w) => console.warn('warn: ' + w));

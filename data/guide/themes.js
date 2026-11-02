@@ -17,7 +17,7 @@ SFMAP.guide.themes = [
   },
   {
     id: 'made-minds', name: 'Artificial Minds', sector: 'ai',
-    summary: 'From Frankenstein’s creature to Murderbot, the made mind asks what makes a person and what a maker owes what it makes. Robots begin as figures of labour and revolt; AIs become gods, slaves, children and colleagues.',
+    summary: 'From *Frankenstein*’s creature to Murderbot, the made mind asks what makes a person and what a maker owes what it makes. Robots begin as figures of labour and revolt; AIs become gods, slaves, children and colleagues.',
     questions: [
       'Can consciousness be built, or does it have to be grown?',
       'Who is responsible when a created being suffers, or does harm?',
@@ -72,7 +72,7 @@ SFMAP.guide.themes = [
   },
   {
     id: 'planet', name: 'Ecology and the Living Planet', sector: 'eco',
-    summary: 'Dune made a planet’s ecology the engine of its plot. Climate fiction now writes about the planet we already live on, where the catastrophe is gradual, political and partly our own doing.',
+    summary: '*Dune* made a planet’s ecology the engine of its plot. Climate fiction now writes about the planet we already live on, where the catastrophe is gradual, political and partly our own doing.',
     questions: [
       'How do environments shape cultures, beliefs and power?',
       'Can a technological civilization live within the limits of its world?',
@@ -116,7 +116,7 @@ SFMAP.guide.themes = [
   },
   {
     id: 'war', name: 'War and the Soldier', sector: 'military',
-    summary: 'Military SF is one long argument. Heinlein’s Starship Troopers presented service as the root of citizenship, and generations of writers, many of them veterans, have answered back.',
+    summary: 'Military SF is one long argument. Heinlein’s *Starship Troopers* presented service as the root of citizenship, and generations of writers, many of them veterans, have answered back.',
     questions: [
       'Is war a test of virtue, or a machine that consumes people?',
       'What happens to soldiers who come home to a world that has moved on?',

@@ -6,7 +6,7 @@ SFMAP.guide = SFMAP.guide || {};
 SFMAP.guide.craft = [
   {
     id: 'novum', name: 'The novum',
-    origin: 'Darko Suvin, Metamorphoses of Science Fiction (1979)',
+    origin: 'Darko Suvin, *Metamorphoses of Science Fiction* (1979)',
     summary: 'Suvin defined science fiction by its novum, a “new thing” such as an invention, a discovery or a social change, which the story treats as real and explores logically. The world around it is estranged from ours but still explained by reason rather than magic. He called this effect cognitive estrangement.',
     how: [
       'Choose one change and state it in a single precise sentence.',
@@ -48,7 +48,7 @@ SFMAP.guide.craft = [
   },
   {
     id: 'incluing', name: 'Incluing: worldbuilding by implication',
-    origin: 'Term coined by Jo Walton (2004). Heinlein’s “The door dilated” comes from Beyond This Horizon (1942)',
+    origin: 'Term coined by Jo Walton (2004). Heinlein’s “The door dilated” comes from *Beyond This Horizon* (1942)',
     summary: 'Instead of explaining the world, scatter clues through action and let the reader assemble them. Heinlein’s “The door dilated” gives you the technology, the setting and the character’s indifference to both in three words. Experienced SF readers treat every such detail as information.',
     how: [
       'Let characters use things without explaining them, the way you use a phone.',
@@ -78,7 +78,7 @@ SFMAP.guide.craft = [
   {
     id: 'neologism', name: 'Invented words and languages',
     origin: 'A long tradition. The Turkey City Lexicon warns against “calling a rabbit a smeerp”',
-    summary: 'A few well-made words can carry a world. “Robot”, “cyberspace” and “Newspeak” all entered English from SF. Whole invented dialects, such as Nadsat or Riddley Walker’s future English, make the reader do the work of a time traveller.',
+    summary: 'A few well-made words can carry a world. “Robot”, “cyberspace” and “Newspeak” all entered English from SF. Whole invented dialects, such as Nadsat or *Riddley Walker*’s future English, make the reader do the work of a time traveller.',
     how: [
       'Coin words only for things that are new in the world.',
       'Build them the way real languages do: compounds, borrowings, slang and worn-down phrases.',
@@ -91,7 +91,7 @@ SFMAP.guide.craft = [
   },
   {
     id: 'documents', name: 'Found documents and invented scholarship',
-    origin: 'An old device, used by The Iron Heel (1908) and The Handmaid’s Tale',
+    origin: 'An old device, used by *The Iron Heel* (1908) and *The Handmaid’s Tale*',
     summary: 'Presenting the story as an artefact from the future (a manuscript, a log, letters, a lab report, an academic paper) makes the world feel solid, because a document implies the world that produced it. A frame can also overturn the story at the end.',
     how: [
       'Decide who wrote the document, for whom, and when and how it was found.',
@@ -105,7 +105,7 @@ SFMAP.guide.craft = [
   },
   {
     id: 'collage', name: 'Collage and the many-voiced world',
-    origin: 'Adapted by John Brunner from John Dos Passos’s U.S.A. trilogy',
+    origin: 'Adapted by John Brunner from John Dos Passos’s *U.S.A.* trilogy',
     summary: 'A world-sized story can be told in fragments: news clips, adverts, overheard voices and slogans, threaded between a few continuing characters. The reader assembles a whole society out of its noise.',
     how: [
       'Alternate a small cast’s chapters with short, varied fragments.',
@@ -133,7 +133,7 @@ SFMAP.guide.craft = [
   },
   {
     id: 'thought-experiment', name: 'Fiction as thought experiment',
-    origin: 'Ursula K. Le Guin, introduction to The Left Hand of Darkness (1976)',
+    origin: 'Ursula K. Le Guin, introduction to *The Left Hand of Darkness* (1976)',
     summary: 'Le Guin wrote that science fiction is not predictive but descriptive, and called her novel a thought experiment: change one condition, hold the rest, and see what follows. The question is not “will this happen?” but “what does this show about us?”',
     how: [
       'Frame your premise as a question about the present.',
@@ -161,7 +161,7 @@ SFMAP.guide.craft = [
   },
   {
     id: 'breakthrough', name: 'The conceptual breakthrough',
-    origin: 'Peter Nicholls, The Encyclopedia of Science Fiction (1979)',
+    origin: 'Peter Nicholls, *The Encyclopedia of Science Fiction* (1979)',
     summary: 'Many SF plots turn on the moment when characters, and the reader, discover that the world is not what they thought: the ship is not the universe, reality is a simulation, the object is vastly bigger than anyone imagined. Nicholls saw this as a main source of the genre’s sense of wonder.',
     how: [
       'Plant clues that make sense both before and after the reveal.',
@@ -175,14 +175,14 @@ SFMAP.guide.craft = [
   },
   {
     id: 'future-history', name: 'Future history and the fix-up',
-    origin: 'Heinlein’s Future History chart, published in Astounding (1941); “fix-up” is A. E. van Vogt’s term',
+    origin: 'Heinlein’s Future History chart, published in *Astounding* (1941); “fix-up” is A. E. van Vogt’s term',
     summary: 'Some writers plan a timeline of the future and set many stories at points along it, so each story deepens the others. Linked stories are often revised later into a single book, a “fix-up”.',
     how: [
       'Draft a timeline of the major changes before writing.',
       'Set stories at turning points and tell them from different viewpoints.',
       'Let later stories reveal the long consequences of earlier ones.'
     ],
-    example: { id: 'foundation', text: 'Foundation was assembled from stories in 1940s Astounding, each jumping further into Hari Seldon’s thousand-year plan.' },
+    example: { id: 'foundation', text: '*Foundation* was assembled from stories in 1940s *Astounding*, each jumping further into Hari Seldon’s thousand-year plan.' },
     pitfall: 'Consistency for its own sake. The timeline should serve the stories, not the reverse.',
     exercise: 'Draw a 500-year timeline for your world with five turning points, then write the one nobody else would choose.',
     works: ['last-and-first-men', 'foundation', 'martian-chronicles', 'canticle-for-leibowitz', 'accelerando']
