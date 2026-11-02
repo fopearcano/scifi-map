@@ -45,7 +45,7 @@ npm run serve
 
 `scripts/serve.py` tells the browser to re-check every file, so you always see the latest version after pulling changes. If you use another server and the page looks out of date (for example a button that does nothing), force a full reload with <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows and Linux).
 
-The stylesheet and scripts are linked from `index.html` with a version tag (`?v=4`). Increase it whenever you change CSS or JavaScript, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
+The stylesheet and scripts are linked from `index.html` with a version tag (`?v=5`). Increase it whenever you change CSS or JavaScript, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
 
 To publish it with GitHub Pages, enable Pages for the repository and point it at the branch root.
 
