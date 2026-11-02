@@ -18,6 +18,7 @@
   --panel-solid: #0c111e;
   --beacon: #ffc861;
   --beacon-ink: #1a1405;
+  --cat-title: oklch(0.83 0.13 152);
   --dust: 220, 228, 255;
   --halo-strength: 0.17;
   --sL: 0.8;
@@ -30,7 +31,7 @@
   --era-postmodern: oklch(0.82 0.09 235);
   --era-newcentury: oklch(0.7 0.15 258);
 
-  --f-display: 'Bodoni Moda', 'Bodoni 72', Didot, 'Times New Roman', serif;
+  --f-display: 'Libre Baskerville', Baskerville, 'Baskerville Old Face', Georgia, serif;
   --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -62,6 +63,7 @@
     --panel-solid: #f7f9fc;
     --beacon: #b5650f;
     --beacon-ink: #ffffff;
+  --cat-title: oklch(0.48 0.13 150);
     --dust: 21, 32, 58;
     --halo-strength: 0.12;
     --sL: 0.56;
@@ -89,6 +91,7 @@
   --panel-solid: #f7f9fc;
   --beacon: #b5650f;
   --beacon-ink: #ffffff;
+  --cat-title: oklch(0.48 0.13 150);
   --dust: 21, 32, 58;
   --halo-strength: 0.12;
   --sL: 0.56;
@@ -171,7 +174,7 @@ button { cursor: pointer; }
 .spoke { stroke: var(--rule); vector-effect: non-scaling-stroke; }
 .nebula { pointer-events: none; }
 .sector-name {
-  font: italic 500 22px var(--f-display);
+  font: 400 17px var(--f-display);
   fill: var(--c);
   letter-spacing: 0.02em;
   opacity: 0.9;
@@ -181,7 +184,7 @@ button { cursor: pointer; }
   fill: var(--ink-3);
   letter-spacing: 0.08em;
 }
-.ring-label.era { font: italic 400 17px var(--f-display); fill: var(--ink-2); letter-spacing: 0.02em; }
+.ring-label.era { font: 400 15px var(--f-display); fill: var(--ink-2); letter-spacing: 0.02em; }
 .ring-label-bg { fill: var(--void); opacity: 0.85; }
 .core-glow { pointer-events: none; }
 .ruler .era { transition: opacity 0.3s; }
@@ -189,11 +192,11 @@ button { cursor: pointer; }
 
 .lane { fill: var(--ink); opacity: 0.025; }
 .lane.alt { opacity: 0; }
-.lane-name { font: italic 500 24px var(--f-display); fill: var(--c); text-anchor: end; dominant-baseline: middle; }
+.lane-name { font: 400 20px var(--f-display); fill: var(--c); text-anchor: end; dominant-baseline: middle; }
 .tick { stroke: var(--rule); vector-effect: non-scaling-stroke; }
 .tick.major { stroke: var(--rule-strong); }
 .tick-label { font: 500 15px var(--f-mono); fill: var(--ink-3); text-anchor: middle; }
-.era-band-label { font: italic 400 21px var(--f-display); fill: var(--ink-2); }
+.era-band-label { font: 400 18px var(--f-display); fill: var(--ink-2); }
 
 .link {
   fill: none;
@@ -251,7 +254,7 @@ button { cursor: pointer; }
   stroke-linejoin: round;
   transition: opacity 0.25s;
 }
-.label.landmark { font: italic 600 13px var(--f-display); fill: var(--ink); }
+.label.landmark { font: 400 12.5px var(--f-display); fill: var(--ink); }
 .label.lit { fill: var(--ink); }
 .label.sel { fill: var(--beacon); }
 
@@ -266,7 +269,7 @@ button { cursor: pointer; }
 }
 .brand {
   margin: 0;
-  font: 400 var(--t-xl)/1.05 var(--f-display);
+  font: 400 var(--t-xl)/1.15 var(--f-display);
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
@@ -512,7 +515,7 @@ button { cursor: pointer; }
   text-align: left;
 }
 .tour-list button:hover { background: var(--rule); }
-.tour-list .t-name { display: block; font: italic 500 var(--t-md) var(--f-display); }
+.tour-list .t-name { display: block; font: 400 0.9375rem/1.4 var(--f-display); }
 .tour-list .t-blurb { display: block; font-size: var(--t-xs); color: var(--ink-2); line-height: 1.4; }
 
 /* ---- Detail -------------------------------------------------------------- */
@@ -547,7 +550,7 @@ button { cursor: pointer; }
 .d-eyebrow .sec { color: var(--c); display: inline-flex; gap: 6px; align-items: center; }
 .d-title {
   margin: 10px 0 4px;
-  font: italic 500 1.6rem/1.12 var(--f-display);
+  font: 400 1.4rem/1.25 var(--f-display);
   text-wrap: balance;
 }
 .d-byline { margin: 0; font-size: var(--t-md); color: var(--ink-2); }
@@ -657,7 +660,7 @@ button { cursor: pointer; }
   color: var(--ink-3);
 }
 .tc-head strong { color: var(--beacon); font-weight: 500; }
-.tc-title { margin: 6px 0 2px; font: italic 500 var(--t-lg)/1.2 var(--f-display); }
+.tc-title { margin: 6px 0 2px; font: 400 1.125rem/1.3 var(--f-display); }
 .tc-title .by { font: 400 var(--t-sm) var(--f-body); font-style: normal; color: var(--ink-2); }
 .tc-note { margin: 4px 0 0; font-size: var(--t-sm); line-height: 1.5; color: var(--ink-2); }
 .tc-nav { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
@@ -756,7 +759,7 @@ button { cursor: pointer; }
 .cat-table tr { cursor: pointer; }
 .cat-table tbody tr:hover td, .cat-table tbody tr.sel td { background: var(--rule); }
 .cat-table .c-year { font-family: var(--f-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.cat-table .c-title { font: italic 500 1rem var(--f-display); }
+.cat-table .c-title { font: 400 0.9375rem/1.45 var(--f-display); color: var(--cat-title); }
 .cat-table .c-sector { white-space: nowrap; color: var(--ink-2); }
 .cat-table .c-sector .dot { margin-right: 6px; }
 .cat-table .c-awards { color: var(--beacon); font-size: var(--t-xs); white-space: nowrap; }
@@ -791,7 +794,7 @@ button { cursor: pointer; }
   text-transform: uppercase;
   color: var(--beacon);
 }
-.guide-title { margin: 0; font: italic 400 clamp(2rem, 4.5vw, 3.1rem)/1.05 var(--f-display); letter-spacing: -0.01em; text-wrap: balance; }
+.guide-title { margin: 0; font: 400 clamp(1.75rem, 4vw, 2.6rem)/1.15 var(--f-display); letter-spacing: -0.01em; text-wrap: balance; }
 .guide-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
 .guide-tabs button {
   margin-bottom: -1px;
@@ -818,7 +821,7 @@ button { cursor: pointer; }
 }
 .g-contents button:hover { color: var(--ink); border-color: var(--ink-3); }
 
-.g-name { margin: 0; font: italic 500 1.5rem/1.15 var(--f-display); text-wrap: balance; }
+.g-name { margin: 0; font: 400 1.3rem/1.3 var(--f-display); text-wrap: balance; }
 .g-summary { margin: 0; max-width: 68ch; line-height: 1.6; }
 .g-h {
   margin: 6px 0 0;
@@ -836,7 +839,7 @@ button { cursor: pointer; }
   font-size: var(--t-sm);
   line-height: 1.5;
 }
-.g-motifs { margin: 0; font: italic 400 1rem/1.5 var(--f-display); color: var(--ink-2); }
+.g-motifs { margin: 0; font: italic 400 0.9375rem/1.6 var(--f-display); color: var(--ink-2); }
 .g-foot { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .g-works { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .g-chip {
@@ -922,7 +925,7 @@ button { cursor: pointer; }
   background: color-mix(in oklab, var(--beacon) 9%, transparent);
 }
 .g-example .g-h { margin: 0; }
-.g-example p { margin: 6px 0 10px; font: italic 400 1.05rem/1.55 var(--f-display); }
+.g-example p { margin: 6px 0 10px; font: italic 400 1rem/1.65 var(--f-display); }
 .g-source {
   display: inline-flex;
   align-items: center;
@@ -960,7 +963,7 @@ button { cursor: pointer; }
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 .sp-label { font: 500 var(--t-xs) var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--beacon); }
-.sp-name { font: italic 500 var(--t-md) var(--f-display); }
+.sp-name { font: 400 var(--t-md) var(--f-display); }
 .sp-n { font: 500 var(--t-xs) var(--f-mono); color: var(--ink-3); }
 .app.touring .spotlight { display: none; }
 
@@ -972,7 +975,7 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 680px) {
-  :root { --t-xl: 1.375rem; }
+  :root { --t-xl: 1.25rem; }
   .masthead { max-width: calc(100% - 32px); }
   .toolbar {
     top: calc(var(--edge-t) + 50px);

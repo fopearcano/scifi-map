@@ -77,10 +77,32 @@
       var lab = el('text', { class: 'label' + (w.landmark ? ' landmark' : ''), 'data-id': w.id }, labelsG);
       lab.textContent = shortTitle(w);
       lab.style.display = 'none';
-      labels[w.id] = { el: lab, width: shortTitle(w).length * (w.landmark ? 7.1 : 6.1) };
+      labels[w.id] = { el: lab, width: shortTitle(w).length * (w.landmark ? 7.4 : 6.1) };
 
       cur[w.id] = { x: G.galaxy.pos[w.id].x, y: G.galaxy.pos[w.id].y };
     });
+
+    // Measure label widths with the real fonts (again once web fonts have
+    // loaded), so collision avoidance matches what is drawn.
+    function measureLabels() {
+      var ctx2 = document.createElement('canvas').getContext('2d');
+      var fontFor = {};
+      S.works.forEach(function (w) {
+        var lab = labels[w.id];
+        var key = w.landmark ? 'landmark' : 'plain';
+        if (!fontFor[key]) {
+          var cs = getComputedStyle(lab.el);
+          fontFor[key] = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+        }
+        ctx2.font = fontFor[key];
+        var width = ctx2.measureText(lab.el.textContent).width;
+        if (width > 0) lab.width = width;
+      });
+    }
+    measureLabels();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { measureLabels(); queueLabels(); });
+    }
 
     // ---- Geometry ----------------------------------------------------------
 
