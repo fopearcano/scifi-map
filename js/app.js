@@ -19,7 +19,9 @@
     awardsOnly: false,
     tour: null,
     step: 0,
-    sort: { key: 'year', dir: 'asc' }
+    sort: { key: 'year', dir: 'asc' },
+    guideTab: 'themes',
+    spotlight: null
   };
   S.sectors.forEach(function (s) { ui.sectorsOn[s.id] = true; });
 
@@ -35,13 +37,15 @@
     var small = mobile.matches;
     var detailOpen = !$('detail').hidden;
     var tourOpen = !$('tour-card').hidden;
+    var spotOpen = !$('spotlight').hidden;
     var keyOpen = !app.classList.contains('key-closed');
     var H = app.clientHeight;
     chart.setInsets({
       top: small ? 140 : 70,
       left: !small && keyOpen ? $('key').offsetWidth + 24 : 0,
       right: !small && detailOpen ? $('detail').offsetWidth + 24 : 0,
-      bottom: small && detailOpen ? H * 0.58 : tourOpen ? $('tour-card').offsetHeight + 24 : 24
+      bottom: small && detailOpen ? H * 0.58 : tourOpen ? $('tour-card').offsetHeight + 24 :
+        spotOpen ? $('spotlight').offsetHeight + 28 : 24
     });
     app.classList.toggle('has-detail', detailOpen);
   }
@@ -50,19 +54,64 @@
 
   function passes(w) {
     return ui.sectorsOn[w.sector] && w.year >= ui.yearFrom && w.year <= ui.yearTo &&
-      (!ui.awardsOnly || w.awards.length > 0);
+      (!ui.awardsOnly || w.awards.length > 0) && (!ui.spotlight || ui.spotlight.ids[w.id]);
   }
 
   function filtersActive() {
-    return ui.awardsOnly || ui.yearFrom > minYear || ui.yearTo < maxYear ||
+    return ui.awardsOnly || ui.yearFrom > minYear || ui.yearTo < maxYear || !!ui.spotlight ||
       S.sectors.some(function (s) { return !ui.sectorsOn[s.id]; });
   }
 
   function applyFilters() {
     chart.setFilter(filtersActive() ? passes : null);
     renderSectorList();
+    renderSpotlight();
     if (ui.view === 'catalogue') renderCatalogue();
   }
+
+  // ---- Spotlight: a set of works picked from the guide --------------------------
+
+  function renderSpotlight() {
+    var bar = $('spotlight');
+    if (!ui.spotlight) { bar.hidden = true; return; }
+    var shown = S.works.filter(passes).length;
+    bar.innerHTML = '<span class="sp-label">Spotlight</span><strong class="sp-name">' + S.esc(ui.spotlight.name) + '</strong>' +
+      '<span class="sp-n">' + shown + (shown === 1 ? ' work' : ' works') + '</span>' +
+      '<button type="button" class="btn" data-sp="guide">Back to guide</button>' +
+      '<button type="button" class="btn" data-sp="clear">Clear</button>';
+    bar.hidden = false;
+  }
+
+  function spotlight(tab, id) {
+    var entry = S.guideEntry(tab, id);
+    if (!entry) return;
+    if (ui.tour) endTour();
+    var ids = {};
+    entry.works.forEach(function (w) { ids[w] = true; });
+    ui.spotlight = { name: entry.name, ids: ids, tab: tab, entry: id };
+    if (ui.selected) deselect();
+    setView(chart.getView());
+    applyFilters();
+    updateInsets();
+    chart.fitTo(entry.works);
+  }
+
+  function clearSpotlight() {
+    ui.spotlight = null;
+    applyFilters();
+    updateInsets();
+    if (ui.view !== 'catalogue' && ui.view !== 'guide') chart.fit(true);
+  }
+
+  $('spotlight').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sp]');
+    if (!b) return;
+    if (b.getAttribute('data-sp') === 'clear') { clearSpotlight(); return; }
+    var back = ui.spotlight;
+    clearSpotlight();
+    setView('guide');
+    if (back) showGuide(back.tab, back.entry);
+  });
 
   function renderSectorList() {
     var counts = {};
@@ -188,7 +237,7 @@
     var t = e.target.closest('[data-goto],[data-act],[data-tag]');
     if (!t) return;
     if (t.hasAttribute('data-goto')) {
-      select(t.getAttribute('data-goto'), { fly: ui.view !== 'catalogue' });
+      select(t.getAttribute('data-goto'), { fly: !pageView() });
     } else if (t.getAttribute('data-act') === 'close') {
       deselect();
     } else if (t.getAttribute('data-act') === 'lineage') {
@@ -267,7 +316,7 @@
     closeResults();
     input.blur();
     if (ui.tour) endTour();
-    select(id, { fly: ui.view !== 'catalogue', zoom: 2.6 });
+    select(id, { fly: !pageView(), zoom: 2.6 });
   }
 
   input.addEventListener('input', runSearch);
@@ -300,7 +349,8 @@
   });
 
   function startTour(tour) {
-    if (ui.view === 'catalogue') setView('galaxy');
+    if (ui.spotlight) { ui.spotlight = null; applyFilters(); }
+    if (pageView()) setView(chart.getView());
     ui.tour = tour;
     app.classList.add('touring');
     if (mobile.matches) app.classList.add('key-closed');
@@ -376,9 +426,59 @@
     if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(tr.getAttribute('data-id')); }
   });
 
+  // ---- Field guide ------------------------------------------------------------------------
+
+  function renderGuide() {
+    $('guide').innerHTML = S.renderGuide(ui.guideTab);
+  }
+
+  // Open a guide tab, optionally scrolled to one entry.
+  function showGuide(tab, entryId) {
+    if (tab !== ui.guideTab || !$('guide').firstChild) { ui.guideTab = tab; renderGuide(); }
+    var target = entryId && document.getElementById('g-' + entryId);
+    if (target) {
+      target.scrollIntoView({ block: 'start' });
+      target.focus({ preventScroll: true });
+    } else {
+      $('guide').scrollTop = 0;
+    }
+  }
+
+  $('guide').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-gtab],[data-goto],[data-spot],[data-jump]');
+    if (!t) return;
+    if (t.hasAttribute('data-gtab')) {
+      showGuide(t.getAttribute('data-gtab'));
+      var tab = $('guide').querySelector('[data-gtab="' + ui.guideTab + '"]');
+      if (tab) tab.focus();
+    } else if (t.hasAttribute('data-goto')) {
+      select(t.getAttribute('data-goto'));
+    } else if (t.hasAttribute('data-spot')) {
+      var parts = t.getAttribute('data-spot').split(':');
+      spotlight(parts[0], parts[1]);
+    } else if (t.hasAttribute('data-jump')) {
+      showGuide(ui.guideTab, t.getAttribute('data-jump'));
+    }
+  });
+
+  $('guide').addEventListener('keydown', function (e) {
+    var tab = e.target.closest('[data-gtab]');
+    if (!tab || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    var ids = S.guideTabs.map(function (g) { return g.id; });
+    var i = ids.indexOf(tab.getAttribute('data-gtab'));
+    var next = ids[(i + (e.key === 'ArrowRight' ? 1 : ids.length - 1)) % ids.length];
+    showGuide(next);
+    $('guide').querySelector('[data-gtab="' + next + '"]').focus();
+  });
+
+  // Catalogue and Guide are pages laid over the chart rather than chart views.
+  function pageView() {
+    return ui.view === 'catalogue' || ui.view === 'guide';
+  }
+
   function setView(v) {
     if (v === ui.view) return;
-    if (ui.tour && v === 'catalogue') endTour();
+    if (ui.tour && (v === 'catalogue' || v === 'guide')) endTour();
     ui.view = v;
     app.setAttribute('data-view', v);
     document.querySelectorAll('.views [data-view]').forEach(function (b) {
@@ -386,7 +486,9 @@
     });
     var cat = $('catalogue');
     cat.hidden = v !== 'catalogue';
+    $('guide').hidden = v !== 'guide';
     if (v === 'catalogue') { renderCatalogue(); cat.scrollTop = 0; return; }
+    if (v === 'guide') { showGuide(ui.guideTab); return; }
     updateInsets();
     chart.setView(v, true);
     if (ui.selected) setTimeout(function () { if (ui.selected) chart.flyTo(ui.selected); }, 1150);

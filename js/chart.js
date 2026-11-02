@@ -140,7 +140,8 @@
     function placeLabels() {
       var W = svg.clientWidth;
       var H = svg.clientHeight;
-      var thr = labelThreshold();
+      // When a filter leaves only a few stars, label all of them.
+      var thr = passCount <= 40 ? 0 : labelThreshold();
       var lit = currentLit();
       var placed = [];
       var s = starScale();
@@ -166,6 +167,7 @@
         var box = left
           ? { x0: sx - r - 5 - lab.width, y0: sy - 8, x1: sx - r - 3, y1: sy + 6 }
           : { x0: sx + r + 3, y0: sy - 8, x1: sx + r + 5 + lab.width, y1: sy + 6 };
+        if (want && left && box.x0 < 4) want = false;
         if (want) {
           for (var i = 0; i < placed.length; i++) {
             var b = placed[i];
@@ -432,12 +434,15 @@
       refreshHighlight();
     }
 
+    var passCount = S.works.length;
     function refreshFilter() {
       var f = state.filter;
       var outIds = {};
+      passCount = 0;
       S.works.forEach(function (w) {
         var out = !!(f && !f(w));
         if (out) outIds[w.id] = true;
+        else passCount++;
         stars[w.id].classList.toggle('out', out);
       });
       linkEls.forEach(function (l) { l.el.classList.toggle('out', !!(outIds[l.source] || outIds[l.target])); });
@@ -482,6 +487,27 @@
       animateTo({ k: k, x: insets.left + W / 2 - p.x * k, y: insets.top + H / 2 - p.y * k }, 800);
     }
 
+    // Frame a set of works in the current view, leaving room for their labels.
+    function fitTo(ids, duration) {
+      var pos = G[view].pos;
+      var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      ids.forEach(function (id) {
+        var p = pos[id];
+        x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y);
+        x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y);
+      });
+      var W = svg.clientWidth - insets.left - insets.right - 220;
+      var H = svg.clientHeight - insets.top - insets.bottom - 60;
+      var k = clampK(Math.min(2.6, W / Math.max(x1 - x0, 1), H / Math.max(y1 - y0, 1)));
+      var cx = (x0 + x1) / 2 + 60 / k;
+      var cy = (y0 + y1) / 2;
+      animateTo({
+        k: k,
+        x: insets.left + (svg.clientWidth - insets.left - insets.right) / 2 - cx * k,
+        y: insets.top + (svg.clientHeight - insets.top - insets.bottom) / 2 - cy * k
+      }, duration === undefined ? 900 : duration);
+    }
+
     function resize() {
       sizeCanvas();
       queueLabels();
@@ -510,6 +536,7 @@
       animateTo({ k: target, x: cx - (cx - t.x) * ff, y: cy - (cy - t.y) * ff }, 300);
     };
     api.flyTo = flyTo;
+    api.fitTo = fitTo;
     api.setInsets = function (i) { insets = i; };
     api.select = function (id) { state.selected = id; refreshHighlight(); };
     api.focus = setFocus;

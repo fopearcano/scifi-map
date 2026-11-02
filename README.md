@@ -18,6 +18,12 @@ An interactive star chart of science fiction literature. 230 works, from Lucian'
 
 - **Galaxy and Timeline views**, with an animated move between the two. The timeline gives each sector a lane on a shared year axis.
 - **Catalogue view**: a sortable, keyboard-accessible table of every work.
+- **Guide**: a field guide to how science fiction works, in three parts:
+  - *Themes*: 14 themes (the alien, artificial minds, time, surveillance, utopia, empire, language and more), each with the questions it asks, its recurring motifs and the books that explore it most fully.
+  - *The Science*: 17 topics, from time dilation and orbital mechanics to epidemics and the Sapir–Whorf hypothesis. Each gives one key figure, what the science says, how fiction uses it and where fiction bends it.
+  - *Writing Methods*: 15 techniques particular to SF, such as the novum, incluing, the info-dump, extrapolation and the conceptual breakthrough. Each has its origin, how it's done, an example from a book in the atlas, a common pitfall and an exercise.
+
+  Every entry links to its books, and *Spotlight on the map* shows only those works on the chart.
 - **Records**: click a star to see its synopsis, themes, awards, what it draws on, what it influenced and other works by the same author. *Trace full lineage* lights up every ancestor and descendant.
 - **Voyages**: six guided tours, including the origins of the genre, the history of artificial minds, the road to cyberspace and the long argument with *Starship Troopers*.
 - **Filters**: sectors (Alt-click to show one sector only), a publication-year range, and award winners (Hugo, Nebula, Arthur C. Clarke).
@@ -47,10 +53,12 @@ css/styles.css          themes, sector and era colours, layout
 data/meta.js            sectors, eras, award names and landmark works
 data/sectors/*.js       the works, one file per sector
 data/tours.js           guided voyages
+data/guide/*.js         field guide: themes, science and writing methods
 js/layout.js            derived fields and the galaxy and timeline geometry
 js/decor.js             rings, nebulae, sector names, timeline lanes
 js/chart.js             SVG rendering, pan and zoom, highlighting, labels
 js/panels.js            HTML for search results, records, catalogue, voyages
+js/guide.js             HTML for the field guide
 js/app.js               UI state and event wiring
 scripts/validate-data.js  dataset checks (run in CI)
 ```
@@ -82,7 +90,7 @@ Influence links should be well attested: the author said so, the work openly ans
 node scripts/validate-data.js
 ```
 
-The validator rejects duplicate ids, unknown sectors, forms or awards, influence links to missing works or to works published later, and voyage steps that do not exist.
+The validator rejects duplicate ids, unknown sectors, forms or awards, influence links to missing works or to works published later, voyage steps that do not exist, and guide entries that point at missing works or sectors.
 
 ## Notes on the data
 

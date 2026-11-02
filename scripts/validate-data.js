@@ -71,6 +71,26 @@ for (const t of S.tours || []) {
   for (const step of t.steps) if (!byId.has(step.id)) fail(`tour "${t.id}": unknown work "${step.id}"`);
 }
 
+// Field guide entries must point at real works, sectors and science fields.
+const guide = S.guide || {};
+const fields = new Set(guide.fields || []);
+for (const section of ['themes', 'science', 'craft']) {
+  const entries = guide[section];
+  if (!Array.isArray(entries) || !entries.length) { fail(`guide: missing section "${section}"`); continue; }
+  const seen = new Set();
+  for (const e of entries) {
+    const where = `guide ${section} "${e.id}"`;
+    if (seen.has(e.id)) fail(`${where}: duplicate id`);
+    seen.add(e.id);
+    if (!e.name || !Array.isArray(e.works) || !e.works.length) fail(`${where}: needs a name and at least one work`);
+    for (const id of e.works || []) if (!byId.has(id)) fail(`${where}: unknown work "${id}"`);
+    if (new Set(e.works).size !== (e.works || []).length) fail(`${where}: lists a work twice`);
+    if (section === 'themes' && !sectorIds.has(e.sector)) fail(`${where}: unknown sector "${e.sector}"`);
+    if (section === 'science' && (!fields.has(e.field) || !e.fact || !e.fact.value)) fail(`${where}: needs a known field and a fact`);
+    if (section === 'craft' && (!e.example || !byId.has(e.example.id))) fail(`${where}: example must name a work in the atlas`);
+  }
+}
+
 const links = S.works.reduce((n, w) => n + (w.inf || []).length, 0);
 const authors = new Set(S.works.map((w) => w.author)).size;
 warnings.forEach((w) => console.warn('warn: ' + w));
@@ -79,4 +99,5 @@ if (errors.length) {
   console.error(`\n${errors.length} error(s).`);
   process.exit(1);
 }
-console.log(`OK: ${S.works.length} works, ${authors} authors, ${links} influence links, ${S.sectors.length} sectors, ${(S.tours || []).length} tours.`);
+const guideCount = ['themes', 'science', 'craft'].map((k) => `${(guide[k] || []).length} ${k}`).join(', ');
+console.log(`OK: ${S.works.length} works, ${authors} authors, ${links} influence links, ${S.sectors.length} sectors, ${(S.tours || []).length} tours; guide: ${guideCount}.`);

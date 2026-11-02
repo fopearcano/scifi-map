@@ -18,6 +18,7 @@
     </svg>
 
     <section class="catalogue" id="catalogue" hidden aria-label="Catalogue of works"></section>
+    <section class="guide" id="guide" hidden aria-label="Field guide to science fiction"></section>
 
     <header class="masthead">
       <h1 class="brand">Atlas of <em>Imagined</em> Futures</h1>
@@ -36,6 +37,7 @@
         <button type="button" role="radio" data-view="galaxy" aria-checked="true">Galaxy</button>
         <button type="button" role="radio" data-view="timeline" aria-checked="false">Timeline</button>
         <button type="button" role="radio" data-view="catalogue" aria-checked="false">Catalogue</button>
+        <button type="button" role="radio" data-view="guide" aria-checked="false">Guide</button>
       </div>
       <button type="button" class="tool-btn" id="key-toggle" aria-controls="key" aria-expanded="true">Key</button>
       <button type="button" class="tool-btn icon" id="theme-toggle" aria-label="Switch between light and dark chart">
@@ -79,6 +81,7 @@
     <aside class="detail panel" id="detail" hidden aria-live="polite"></aside>
 
     <div class="tour-card panel" id="tour-card" hidden role="region" aria-label="Voyage"></div>
+    <div class="spotlight panel" id="spotlight" hidden role="status"></div>
     <div class="tooltip" id="tooltip" hidden></div>
 
     <div class="zoom" role="group" aria-label="Zoom">
@@ -108,10 +111,14 @@
   <script src="data/sectors/inner.js"></script>
   <script src="data/sectors/satire.js"></script>
   <script src="data/tours.js"></script>
+  <script src="data/guide/themes.js"></script>
+  <script src="data/guide/science.js"></script>
+  <script src="data/guide/craft.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/decor.js"></script>
   <script src="js/chart.js"></script>
   <script src="js/panels.js"></script>
+  <script src="js/guide.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
