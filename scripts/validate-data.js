@@ -16,7 +16,7 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 
 // Load the data scripts in the same order as index.html does.
-const dataScripts = [...html.matchAll(/<script src="(data\/[^"]+)"/g)].map((m) => m[1]);
+const dataScripts = [...html.matchAll(/<script src="(data\/[^"?]+)/g)].map((m) => m[1]);
 const sandbox = { window: {} };
 sandbox.SFMAP = undefined;
 vm.createContext(sandbox);

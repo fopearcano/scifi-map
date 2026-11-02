@@ -452,7 +452,7 @@
     // ---- Views -------------------------------------------------------------
 
     function setView(v, animate) {
-      if (v === view) return;
+      if (v === view || !G[v]) return;
       stopMove();
       view = v;
       decorGalaxy.classList.toggle('off', v !== 'galaxy');
