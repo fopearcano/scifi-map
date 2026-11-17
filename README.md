@@ -1,6 +1,6 @@
 # Atlas of Imagined Futures
 
-An interactive star chart of science fiction literature. 230 works, from Lucian's *A True Story* (2nd century CE) to *Some Desperate Glory* (2023), are drawn as stars, grouped into fifteen thematic sectors and linked by lines of influence.
+An interactive star chart of science fiction literature. 4,484 works, from Lucian's *A True Story* (2nd century CE) onward, are drawn as stars in fifteen thematic sectors. The original 230 hand-curated works retain their notes, awards, tours and lines of influence; 4,254 sourced catalog records extend the map.
 
 ![Galaxy view](docs/galaxy.jpg)
 
@@ -24,7 +24,7 @@ An interactive star chart of science fiction literature. 230 works, from Lucian'
   - *Writing Methods*: 15 techniques particular to SF, such as the novum, incluing, the info-dump, extrapolation and the conceptual breakthrough. Each has its origin, how it's done, an example from a book in the atlas, a common pitfall and an exercise.
 
   Every entry links to its books, and *Spotlight on the map* shows only those works on the chart. In the guide's text, book titles are marked `*like this*`; titles of works in the atlas become links to their records.
-- **Records**: click a star to see its synopsis, themes, awards, what it draws on, what it influenced and other works by the same author. *Trace full lineage* lights up every ancestor and descendant.
+- **Records**: click a star to see its description, themes, awards, what it draws on, what it influenced and other works by the same author. *Trace full lineage* lights up every ancestor and descendant. Imported records also link to their catalog source.
 - **Voyages**: six guided tours, including the origins of the genre, the history of artificial minds, the road to cyberspace and the long argument with *Starship Troopers*.
 - **Filters**: sectors (Alt-click to show one sector only), a publication-year range, and award winners (Hugo, Nebula, Arthur C. Clarke).
 - **Search** by title, author, theme, language or year. Press <kbd>/</kbd> to jump to it.
@@ -45,7 +45,7 @@ npm run serve
 
 `scripts/serve.py` tells the browser to re-check every file, so you always see the latest version after pulling changes. If you use another server and the page looks out of date (for example a button that does nothing), force a full reload with <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows and Linux).
 
-The stylesheet and scripts are linked from `index.html` with a version tag (`?v=5`). Increase it whenever you change CSS or JavaScript, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
+The stylesheet and scripts are linked from `index.html` with a version tag (`?v=7`). Increase it whenever you change CSS, JavaScript or catalog data, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
 
 To publish it with GitHub Pages, enable Pages for the repository and point it at the branch root.
 
@@ -58,6 +58,7 @@ data/meta.js            sectors, eras, award names and landmark works
 data/sectors/*.js       the works, one file per sector
 data/tours.js           guided voyages
 data/guide/*.js         field guide: themes, science and writing methods
+data/sectors/catalog-*.js  sourced catalog records, generated from a pinned dataset
 js/layout.js            derived fields and the galaxy and timeline geometry
 js/decor.js             rings, nebulae, sector names, timeline lanes
 js/chart.js             SVG rendering, pan and zoom, highlighting, labels
@@ -65,11 +66,12 @@ js/panels.js            HTML for search results, records, catalogue, voyages
 js/guide.js             HTML for the field guide
 js/app.js               UI state and event wiring
 scripts/validate-data.js  dataset checks (run in CI)
+scripts/import-catalog.py  regenerate the sourced catalog files
 ```
 
 ## Adding or correcting a work
 
-Works live in `data/sectors/<sector>.js`. A record looks like this:
+Hand-curated works live in `data/sectors/<sector>.js`. A record looks like this:
 
 ```js
 {
@@ -98,4 +100,8 @@ The validator rejects duplicate ids, unknown sectors, forms or awards, influence
 
 ## Notes on the data
 
-The atlas is a curated selection, not a complete bibliography, and its 108 influence links record notable, documented conversations between books rather than every debt. Sector placement follows each work's dominant theme, although many books could sit in more than one sector. Corrections and additions are welcome.
+The original 230 works are hand-curated. Their 108 influence links record notable, documented conversations between books rather than every debt. The additional 4,254 records come from Fernando de Sousa Mello's [science fiction novels dataset](https://github.com/ferdesmello/sci-fi-novels-evolution), commit `b7722711a91ed8f0fd78be8971d252afc5528d05` (MIT license, copyright 2024–2026 Fernando de Sousa Mello; see `data/CATALOG-LICENSE`). The generated files use titles, authors, years, Goodreads book IDs and reader genre labels from that dataset. They do not copy its synopses or reviews.
+
+For imported records, sector placement comes from the first matching genre among the source's first five labels. Their descriptions identify those labels; they are not plot summaries. Publication years and genre labels are as catalogued by the source and may need correction. The original hand-curated record takes precedence when a title and author match. Catalog records add no unverified awards or influence links. This is an expanded catalog, not a complete bibliography.
+
+Regenerate the 14 catalog files with `python3 scripts/import-catalog.py`. The script downloads the pinned source over HTTPS, verifies its SHA-256 checksum, and leaves the hand-curated sector files alone. It can also use a local copy of that exact CSV with `--source PATH`. Run `npm run validate` after regeneration. Corrections and additions are welcome.

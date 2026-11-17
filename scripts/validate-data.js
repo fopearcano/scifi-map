@@ -34,6 +34,7 @@ const sectorIds = new Set(S.sectors.map((s) => s.id));
 const awardIds = new Set(Object.keys(S.awardNames));
 const forms = new Set(['novel', 'novella', 'novelette', 'short story', 'collection', 'fix-up', 'anthology', 'play']);
 const byId = new Map();
+const sourceIds = new Set();
 
 // Every sector file listed in data/sectors must be loaded by index.html.
 for (const f of fs.readdirSync(path.join(root, 'data/sectors'))) {
@@ -51,6 +52,12 @@ for (const w of S.works) {
   if (!Number.isInteger(w.year) || w.year < 1 || w.year > new Date().getFullYear()) fail(`${where}: bad year ${w.year}`);
   if (!sectorIds.has(w.sector)) fail(`${where}: unknown sector ${w.sector}`);
   if (w.form && !forms.has(w.form)) fail(`${where}: unknown form "${w.form}"`);
+  if (w.sourceId !== undefined) {
+    if (!Number.isSafeInteger(w.sourceId) || w.sourceId <= 0) fail(`${where}: invalid catalog source ID`);
+    if (w.id !== `catalog-${w.sourceId}`) fail(`${where}: catalog id does not match source ID`);
+    if (sourceIds.has(w.sourceId)) fail(`${where}: duplicate catalog source ID`);
+    sourceIds.add(w.sourceId);
+  }
   for (const a of w.awards || []) if (!awardIds.has(a)) fail(`${where}: unknown award "${a}"`);
   if (w.blurb && w.blurb.length > 320) warnings.push(`${where}: blurb is ${w.blurb.length} chars (aim for under 320)`);
 }
