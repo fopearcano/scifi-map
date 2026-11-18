@@ -1,6 +1,6 @@
 # Atlas of Imagined Futures
 
-An interactive star chart of science fiction literature. 4,484 works, from Lucian's *A True Story* (2nd century CE) onward, are drawn as stars in fifteen thematic sectors. The original 230 hand-curated works retain their notes, awards, tours and lines of influence; 4,254 sourced catalog records extend the map.
+An interactive star chart of science fiction literature with 4,484 works, from Lucian's *A True Story* (2nd century CE) onward, in fifteen thematic sectors. It opens with 503 highlighted works for a faster load; the full catalog is optional. The original 230 hand-curated works retain their notes, awards, tours and lines of influence; 4,254 sourced records extend the map.
 
 ![Galaxy view](docs/galaxy.jpg)
 
@@ -17,7 +17,7 @@ An interactive star chart of science fiction literature. 4,484 works, from Lucia
 ## Features
 
 - **Galaxy and Timeline views**, with an animated move between the two. The timeline gives each sector a lane on a shared year axis.
-- **Catalogue view**: a sortable, keyboard-accessible table of every work.
+- **Catalogue view**: a sortable, keyboard-accessible table of the works currently loaded.
 - **Guide**: a field guide to how science fiction works, in three parts:
   - *Themes*: 14 themes (the alien, artificial minds, time, surveillance, utopia, empire, language and more), each with the questions it asks, its recurring motifs and the books that explore it most fully.
   - *The Science*: 17 topics, from time dilation and orbital mechanics to epidemics and the Sapir–Whorf hypothesis. Each gives one key figure, what the science says, how fiction uses it and where fiction bends it.
@@ -27,6 +27,7 @@ An interactive star chart of science fiction literature. 4,484 works, from Lucia
 - **Records**: click a star to see its description, themes, awards, what it draws on, what it influenced and other works by the same author. *Trace full lineage* lights up every ancestor and descendant. Imported records also link to their catalog source.
 - **Voyages**: six guided tours, including the origins of the genre, the history of artificial minds, the road to cyberspace and the long argument with *Starship Troopers*.
 - **Filters**: sectors (Alt-click to show one sector only), a publication-year range, and award winners (Hugo, Nebula, Arthur C. Clarke).
+- **Data load**: the default highlights load shows 503 works. Choose *Curated only* for 230 works or *Full catalog* for all 4,484. Use *Reload this selection* to apply the current sector, year and award filters before building the next chart. Search and Catalogue show the works currently loaded. A direct link to an imported record loads the full catalog so the record still opens.
 - **Search** by title, author, theme, language or year. Press <kbd>/</kbd> to jump to it.
 - **Deep links**: every work has a URL such as `index.html#neuromancer`.
 - Dark night-sky and light printed-atlas themes, touch and pinch support, and a phone layout.
@@ -45,20 +46,23 @@ npm run serve
 
 `scripts/serve.py` tells the browser to re-check every file, so you always see the latest version after pulling changes. If you use another server and the page looks out of date (for example a button that does nothing), force a full reload with <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows and Linux).
 
-The stylesheet and scripts are linked from `index.html` with a version tag (`?v=7`). Increase it whenever you change CSS, JavaScript or catalog data, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
+The stylesheet and scripts are linked from `index.html` with a version tag (`?v=8`). Increase it in `index.html` and `js/load.js` whenever you change CSS, JavaScript or catalog data, so that browsers and hosts such as GitHub Pages load the new files instead of cached ones.
 
 To publish it with GitHub Pages, enable Pages for the repository and point it at the branch root.
 
 ## Project layout
 
 ```
-index.html              page shell; loads the data and scripts in order
+index.html              page shell; loads curated data and the catalog manifest
 css/styles.css          themes, sector and era colours, layout
 data/meta.js            sectors, eras, award names and landmark works
-data/sectors/*.js       the works, one file per sector
+data/sectors/*.js       hand-curated works, one file per sector
+data/catalog-manifest.js  catalog counts, years and available sectors
 data/tours.js           guided voyages
 data/guide/*.js         field guide: themes, science and writing methods
-data/sectors/catalog-*.js  sourced catalog records, generated from a pinned dataset
+data/sectors/catalog-*.js  complete sourced catalog, generated from a pinned dataset
+data/sectors/catalog-featured-*.js  smaller selection ranked by genre relevance and reader count
+js/load.js              loads the chosen catalog tier before building the chart
 js/layout.js            derived fields and the galaxy and timeline geometry
 js/decor.js             rings, nebulae, sector names, timeline lanes
 js/chart.js             SVG rendering, pan and zoom, highlighting, labels
@@ -104,4 +108,4 @@ The original 230 works are hand-curated. Their 108 influence links record notabl
 
 For imported records, sector placement comes from the first matching genre among the source's first five labels. Their descriptions identify those labels; they are not plot summaries. Publication years and genre labels are as catalogued by the source and may need correction. The original hand-curated record takes precedence when a title and author match. Catalog records add no unverified awards or influence links. This is an expanded catalog, not a complete bibliography.
 
-Regenerate the 14 catalog files with `python3 scripts/import-catalog.py`. The script downloads the pinned source over HTTPS, verifies its SHA-256 checksum, and leaves the hand-curated sector files alone. It can also use a local copy of that exact CSV with `--source PATH`. Run `npm run validate` after regeneration. Corrections and additions are welcome.
+Regenerate the 14 full files, 14 featured files and manifest with `python3 scripts/import-catalog.py`. The featured tier keeps up to 24 records per sector, ranked by how prominently the source lists the sector's genre and then by reader count. The script downloads the pinned source over HTTPS, verifies its SHA-256 checksum, and leaves the hand-curated sector files alone. It can also use a local copy of that exact CSV with `--source PATH`. Run `npm run validate` after regeneration. Corrections and additions are welcome.

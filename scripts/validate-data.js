@@ -30,15 +30,48 @@ const errors = [];
 const warnings = [];
 const fail = (msg) => errors.push(msg);
 
+// The browser loads only one catalog tier. Validation checks the complete
+// catalog plus the featured tier's membership without counting it twice.
+const curatedCount = S.works.length;
+const catalogFiles = new Set();
+for (const sector of S.catalog.sectors) {
+  const file = `data/sectors/catalog-${sector}.js`;
+  catalogFiles.add(file);
+  vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
+}
+const fullIds = new Set(S.works.map((w) => w.id));
+const featuredIds = new Set();
+const addWorks = S.addWorks;
+S.addWorks = (sector, list) => {
+  for (const w of list) {
+    if (w.sector && w.sector !== sector) fail(`featured work "${w.id}": wrong sector`);
+    if (!fullIds.has(w.id)) fail(`featured work "${w.id}": missing from full catalog`);
+    if (featuredIds.has(w.id)) fail(`featured work "${w.id}": listed twice`);
+    featuredIds.add(w.id);
+  }
+};
+for (const sector of S.catalog.sectors) {
+  const file = `data/sectors/catalog-featured-${sector}.js`;
+  catalogFiles.add(file);
+  vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
+}
+S.addWorks = addWorks;
+if (S.catalog.curated !== curatedCount) fail(`manifest says ${S.catalog.curated} curated works, found ${curatedCount}`);
+if (S.catalog.total !== S.works.length) fail(`manifest says ${S.catalog.total} works, found ${S.works.length}`);
+if (S.catalog.featured !== curatedCount + featuredIds.size) fail(`manifest says ${S.catalog.featured} featured works, found ${curatedCount + featuredIds.size}`);
+
 const sectorIds = new Set(S.sectors.map((s) => s.id));
 const awardIds = new Set(Object.keys(S.awardNames));
 const forms = new Set(['novel', 'novella', 'novelette', 'short story', 'collection', 'fix-up', 'anthology', 'play']);
 const byId = new Map();
 const sourceIds = new Set();
 
-// Every sector file listed in data/sectors must be loaded by index.html.
+// Every curated file must be loaded by index.html; every catalog tier must
+// be declared in the generated manifest used by js/load.js.
 for (const f of fs.readdirSync(path.join(root, 'data/sectors'))) {
-  if (!dataScripts.includes(`data/sectors/${f}`)) fail(`data/sectors/${f} is not loaded by index.html`);
+  if (!dataScripts.includes(`data/sectors/${f}`) && !catalogFiles.has(`data/sectors/${f}`)) {
+    fail(`data/sectors/${f} is not loaded by the page or catalog manifest`);
+  }
 }
 
 for (const w of S.works) {
