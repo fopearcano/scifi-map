@@ -41,7 +41,7 @@ There is no build step and there are no dependencies. Open `index.html` in a bro
 ```sh
 npm run serve
 # or, without npm: python3 scripts/serve.py
-# then visit http://localhost:8001
+# then visit http://localhost:8101
 ```
 
 `scripts/serve.py` tells the browser to re-check every file, so you always see the latest version after pulling changes. If you use another server and the page looks out of date (for example a button that does nothing), force a full reload with <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on Windows and Linux).
